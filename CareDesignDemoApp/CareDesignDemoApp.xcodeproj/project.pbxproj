@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F43F5A461F0F67C000FAA775 /* FeatureButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43F5A451F0F67C000FAA775 /* FeatureButtonView.swift */; };
 		F43F5A481F0F841600FAA775 /* ColorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43F5A471F0F841600FAA775 /* ColorUtil.swift */; };
+		F43F5A4A1F0F921100FAA775 /* FeatureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43F5A491F0F921100FAA775 /* FeatureModel.swift */; };
 		F4D929971F0E36E5008EFA02 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D929961F0E36E5008EFA02 /* AppDelegate.swift */; };
 		F4D929991F0E36E5008EFA02 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D929981F0E36E5008EFA02 /* ViewController.swift */; };
 		F4D9299C1F0E36E5008EFA02 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4D9299A1F0E36E5008EFA02 /* Main.storyboard */; };
@@ -19,6 +20,7 @@
 /* Begin PBXFileReference section */
 		F43F5A451F0F67C000FAA775 /* FeatureButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureButtonView.swift; sourceTree = "<group>"; };
 		F43F5A471F0F841600FAA775 /* ColorUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorUtil.swift; sourceTree = "<group>"; };
+		F43F5A491F0F921100FAA775 /* FeatureModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureModel.swift; sourceTree = "<group>"; };
 		F4D929931F0E36E5008EFA02 /* CareDesignDemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CareDesignDemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D929961F0E36E5008EFA02 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4D929981F0E36E5008EFA02 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 				F4D9299F1F0E36E5008EFA02 /* LaunchScreen.storyboard */,
 				F4D929A21F0E36E5008EFA02 /* Info.plist */,
 				F43F5A451F0F67C000FAA775 /* FeatureButtonView.swift */,
+				F43F5A491F0F921100FAA775 /* FeatureModel.swift */,
 				F43F5A471F0F841600FAA775 /* ColorUtil.swift */,
 			);
 			path = CareDesignDemoApp;
@@ -146,6 +149,7 @@
 				F4D929991F0E36E5008EFA02 /* ViewController.swift in Sources */,
 				F4D929971F0E36E5008EFA02 /* AppDelegate.swift in Sources */,
 				F43F5A461F0F67C000FAA775 /* FeatureButtonView.swift in Sources */,
+				F43F5A4A1F0F921100FAA775 /* FeatureModel.swift in Sources */,
 				F43F5A481F0F841600FAA775 /* ColorUtil.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

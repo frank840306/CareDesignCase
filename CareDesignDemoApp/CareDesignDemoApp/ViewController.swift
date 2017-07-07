@@ -11,8 +11,9 @@ import UIKit
 class ViewController: UIViewController {
 
     var fullSize:CGSize!
-    let featureList = ["胸悶", "疼痛", "呼吸困難", "蒼白", "血壓不穩", "步態不穩"]
+    var featureList = ["胸悶", "疼痛", "呼吸困難", "蒼白", "血壓不穩", "步態不穩"]
     
+    var featureModel = FeatureModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +24,9 @@ class ViewController: UIViewController {
         
         self.title = "智慧紀錄"
         self.view.backgroundColor = UIColor.init(red: 1, green: 1, blue: 1, alpha: 1)
+        
+        // load feature model
+        featureList = featureModel.getFeatureList()
         
         // add feature Button view
         let featureButtonView = FeatureButtonView(frame: CGRect(x:0,y:100,width:fullSize.width,height:200))
@@ -39,6 +43,7 @@ class ViewController: UIViewController {
         
         // 按鈕文字顏色
         confirm_btn.setTitleColor(care_color_green, for: .normal)
+        confirm_btn.setTitleColor(UIColor.darkGray, for: .selected)
         // 按鈕是否可以使用
         confirm_btn.isEnabled = true
         // 按鈕背景顏色
@@ -55,7 +60,7 @@ class ViewController: UIViewController {
     }
 
     func clickButton(){
-        
+        print("confirm button")
     }
 }
 
