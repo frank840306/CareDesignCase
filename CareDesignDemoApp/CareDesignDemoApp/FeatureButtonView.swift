@@ -13,9 +13,11 @@ import UIKit
 class FeatureButton: UIButton{
 
     var isFeatured:Bool
+    var index:Int
     
-    override init(frame: CGRect) {
+    required init(frame: CGRect, _ index: Int) {
         self.isFeatured = false
+        self.index = index
         
         super.init(frame: frame)
         
@@ -37,6 +39,8 @@ class FeatureButton: UIButton{
     
     func click(){
         isFeatured = !isFeatured
+        let superview = self.superview as! FeatureButtonView
+        superview.click(self.index)
         changeColor()
     }
     
@@ -50,11 +54,16 @@ class FeatureButton: UIButton{
         }
     }
     
+    func disselect(){
+        isFeatured = false
+        changeColor()
+    }
     
 }
 
 class FeatureButtonView: UIScrollView{
     var featureList = [String]()
+    var parentViewController: ViewController?
     
     override init(frame: CGRect){
         super.init(frame: frame)
@@ -71,12 +80,18 @@ class FeatureButtonView: UIScrollView{
         setFeatureButton()
     }
     
+    func _setParentViewController(_ vc: ViewController){
+        self.parentViewController = vc
+    }
+    
     let fullSize = UIScreen.main.bounds.size
     let row_n:Int = 4
     let interval:CGFloat = 10
     let border:CGFloat = 20
     let btn_h:CGFloat = 20
     var btn_w:CGFloat!
+    var buttons: [FeatureButton] = []
+    var isFeatured: [Bool] = []
     
     func setFeatureButton(){
         btn_w = (fullSize.width - 2 * border + interval) / CGFloat(row_n) - interval
@@ -84,10 +99,26 @@ class FeatureButtonView: UIScrollView{
         for (index, feature) in featureList.enumerated(){
             let pos_x = border + CGFloat(index%row_n) * (btn_w+interval)
             let pos_y = border + CGFloat(index/row_n) * (btn_h+interval)
-            let button = FeatureButton(frame: CGRect(x:pos_x, y:pos_y, width: btn_w, height: btn_h))
+            let button = FeatureButton(frame: CGRect(x:pos_x, y:pos_y, width: btn_w, height: btn_h), index)
             button.setTitle(feature, for: .normal)
+            buttons.append(button)
+            isFeatured.append(false)
             self.addSubview(button)
         }
     }
     
+    func clearFeatureButton(){
+        for button in buttons{
+            button.disselect()
+        }
+    }
+    
+    func click(_ index: Int){
+        isFeatured[index] = !isFeatured[index]
+        parentViewController!.updatePredict()
+    }
+    
+    func getFeature() -> [Bool]{
+        return isFeatured
+    }
 }
