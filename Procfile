@@ -1,1 +1,1 @@
-web: run_server deploy
+web: ./run_server deploy
