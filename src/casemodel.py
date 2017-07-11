@@ -91,6 +91,7 @@ class kerasModel:
 		except:
 			print ("the input format is wrong!")
 			return
+		print('XDD')
 		input_len = len(x)
 		pred = model.predict_on_batch(x)
 		output_dim = len(pred[0])
