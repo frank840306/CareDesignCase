@@ -38,6 +38,18 @@ class RandomForestModel:
 			proba = rf.predict_proba(input)
 		except:
 			print ("the input format is wrong!")
-		return proba
+		#print (proba)
+		sorted_proba = np.argsort(proba)
+		sorted_proba = sorted_proba.reshape([len(sorted_proba[0])])[::-1]
+		count = 0 
+		for ele in proba:
+			for e in ele:
+				if e == 0:
+					count = count + 1
+		used = len(proba[0]) - count
+		outputlist = []
+		for i in range(used):
+			outputlist.append(sorted_proba[i])
+		return outputlist
 #print(type(inputdata2[0]))
 #print(type(inputdata2))
