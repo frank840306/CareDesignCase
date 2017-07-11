@@ -30,7 +30,7 @@ class kerasModel:
 
 		predictFocus(input)
 		[parameters]
-			input : a list of features (ex. [0, 1, 0, 0, 0, 1, 51, 8.7] if input_d is 8)
+			input : a matrix of features (ex. [[0, 1, 0, 0, 0, 1, 51, 8.7]] if input_d is 8)
 		[output]
 			return : a sorted list of focus index (ex. [2, 4, 1, 0, 3] if output_d is 5)
 	
@@ -78,7 +78,7 @@ class kerasModel:
 		model.fit(X_train, Y_train, epochs=30, batch_size=8, validation_data=(X_valid, Y_valid))
 		model.save(self.savepath + self.name + '_model.h5')
 
-	def predictFocus(self, input):
+	def predictFocus(self, inputs, discount=0.3):
 		try:
 			train_max = pickle.load(open(self.savepath + self.name + '_max.p', 'rb'))
 			train_min = pickle.load(open(self.savepath + self.name + '_min.p', 'rb'))
@@ -87,19 +87,24 @@ class kerasModel:
 			print ("You don't have the normalization files or the model file. Please train a model first.")
 			return
 		try:
-			x = (np.array([input]) - train_min) / (train_max - train_min)
+			x = (np.array(inputs) - train_min) / (train_max - train_min)
 		except:
 			print ("the input format is wrong!")
 			return
-		pred = model.predict(x)[0]
-		sorted_pred = np.argsort(pred)[::-1]
+		input_len = len(x)
+		pred = model.predict_on_batch(x)
+		output_dim = len(pred[0])
+		final_p = np.zeros(output_dim)
+		for i in range(input_len):
+			final_p += pred[i] * (discount ** (input_len-1-i))
+		sorted_pred = np.argsort(final_p)[::-1]
 		return list(sorted_pred)
 
 '''
-<using example>
-ex = [0,1,1,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,78,158,90,163,203,147,4.3]
+#<using example>
+ex = [[0,1,1,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,78,158,90,163,203,147,4.3]]
 m = kerasModel('0711')
-m.trainModel('31_14.csv', 37, 14)
+#m.trainModel('31_14.csv', 37, 14)
 p = m.predictFocus(ex)
 print (p)
 '''
