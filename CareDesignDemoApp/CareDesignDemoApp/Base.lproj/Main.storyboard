@@ -22,7 +22,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NWu-vF-kKV">
-                                <rect key="frame" x="16" y="333" width="343" height="122"/>
+                                <rect key="frame" x="0.0" y="333" width="375" height="122"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="0.49126914168200386" blue="0.27568643281103067" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
@@ -72,7 +72,7 @@
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bsx-L3-QHR">
-                                <rect key="frame" x="16" y="115" width="343" height="172"/>
+                                <rect key="frame" x="0.0" y="115" width="375" height="172"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="0.49126914170000002" blue="0.27568643279999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
@@ -91,7 +91,7 @@
                         <outlet property="confirm_btn" destination="uOF-CZ-jhb" id="rb9-AD-aAa"/>
                         <outlet property="featureButtonViewPlaceholder" destination="bsx-L3-QHR" id="R2u-iN-jna"/>
                         <outlet property="focusSelectViewPlaceholder" destination="NWu-vF-kKV" id="8OO-pb-mxm"/>
-                        <outlet property="focusTextField" destination="yxR-QI-UUA" id="JBe-yr-x0g"/>
+                        <outlet property="focusTextField" destination="yxR-QI-UUA" id="8C0-uA-UU7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

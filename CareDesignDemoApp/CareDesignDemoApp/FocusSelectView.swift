@@ -25,6 +25,10 @@ class FocusButton: UIButton{
         setTitleColor(.black, for: .normal)
         backgroundColor = .white
         
+        setTitle("", for: .normal)
+        titleLabel?.text = ""
+        titleLabel?.frame = frame
+        
         isEnabled = true
         
         layer.borderWidth = 1.5
@@ -37,10 +41,12 @@ class FocusButton: UIButton{
     }
     
     func click(){
-        isFeatured = !isFeatured
+        if (!isFeatured){
+            isFeatured = true
+            changeColor()
+        }
         let superview = self.superview as! FocusSelectView
         superview.click(self.index)
-        changeColor()
     }
     
     func changeColor(){
@@ -105,8 +111,9 @@ class FocusSelectView: UIView{
         
         for index in 0...focusRecommendNum-1{
             focusButtonList[index].setTitle(focusList[index], for: .normal)
-//            focusButtonList[index].setTitle("test3", for: .normal)
-//            focusButtonList[index].titleLabel?.text = focusList[index]
+            focusButtonList[index].titleLabel!.text = focusList[index]
+            focusButtonList[index].changeColor()
+//            self.backgroundColor = .red
         }
         print("updateBtn done")
     }
@@ -121,9 +128,20 @@ class FocusSelectView: UIView{
             }
         }
         
-        if let focusString = (focusButtonList[index].titleLabel?.text){
+        if let focusString = (focusButtonList[index].titleLabel!.text){
+            print(focusButtonList[index].titleLabel!.text ?? "no title")
             parentViewController?.setFocusLabel(focus: focusString)
         }
+    }
+    
+    func clearFocusButton(){
+        for index in 0...focusRecommendNum-1{
+            focusButtonList[index].setTitle("", for: .normal)
+            focusButtonList[index].titleLabel!.text = ""
+            focusButtonList[index].isFeatured = false
+            focusButtonList[index].changeColor()
+        }
+
     }
     
 }

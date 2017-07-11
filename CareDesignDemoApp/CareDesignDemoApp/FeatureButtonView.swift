@@ -31,6 +31,7 @@ class FeatureButton: UIButton{
         layer.borderWidth = 1.5
         layer.borderColor = care_color_white.cgColor
         addTarget(nil, action: #selector(self.click), for: .touchUpInside)
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -64,10 +65,14 @@ class FeatureButton: UIButton{
 class FeatureButtonView: UIScrollView{
     var featureList = [String]()
     var parentViewController: ViewController?
+    var fullSize:CGRect!
     
     override init(frame: CGRect){
+        
+        
         super.init(frame: frame)
         
+        self.fullSize = self.frame
         backgroundColor = .white
     }
     
@@ -84,7 +89,7 @@ class FeatureButtonView: UIScrollView{
         self.parentViewController = vc
     }
     
-    let fullSize = UIScreen.main.bounds.size
+    
     let row_n:Int = 4
     let interval:CGFloat = 10
     let border:CGFloat = 20
@@ -105,6 +110,8 @@ class FeatureButtonView: UIScrollView{
             isFeatured.append(false)
             self.addSubview(button)
         }
+        
+        self.contentSize = CGSize(width: frame.width, height: max(frame.height, (CGFloat(featureList.count/row_n) * (btn_h+interval) + interval + border) ))
     }
     
     func clearFeatureButton(){

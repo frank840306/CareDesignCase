@@ -16,7 +16,7 @@ class FeatureModel{
     var feature_url:String!
     var predict_url:String!
     var featureList:[String]! = ["沒連上線","胸悶", "疼痛", "呼吸困難", "蒼白", "血壓不穩", "步態不穩", "肢體無力", "心律不整", "冰冷", "瘀斑", "暈眩", "焦慮", "潰瘍", "心電圖異常"]
-    var focusList:[String]! = ["急性疼痛", "心輸出量減少", "低效呼吸型態", "高危險性出血", "高危險性跌倒 ", "組織灌流不足"]
+    var focusList:[String]! = ["沒連上線", "急性疼痛", "心輸出量減少", "低效呼吸型態", "高危險性出血", "高危險性跌倒 ", "組織灌流不足"]
     
     var parentViewController: ViewController?
     
@@ -59,6 +59,7 @@ class FeatureModel{
     }
     
     func getFocusPrediction(_ isFeatured:[Bool]){
+        var taskFlag:Bool = false
         
         let task = URLSession.shared.dataTask(with: URL(string: predict_url)!){
             data, response, error in
@@ -78,10 +79,13 @@ class FeatureModel{
             }else{
                 print("json failed")
             }
+            taskFlag = true
             
-            self.parentViewController?.updataFocusButton()
         }
         task.resume()
+        while(!taskFlag) {
+        }
+        self.parentViewController?.updataFocusButton()
     }
     
     func getFocusList()->[String]{

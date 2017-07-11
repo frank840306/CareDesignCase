@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
 
     var fullSize:CGSize!
     var featureList = ["胸悶", "疼痛", "呼吸困難", "蒼白", "血壓不穩", "步態不穩"]
@@ -20,10 +20,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var focusSelectViewPlaceholder: UIView!
     var focusSelectView:FocusSelectView!
     
+    @IBOutlet weak var focusTextField: UITextField!
     @IBOutlet weak var confirm_btn: UIButton!
     @IBOutlet weak var clear_btn: UIButton!
-    
-    @IBOutlet weak var focusTextField: UITextField!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -52,6 +52,8 @@ class ViewController: UIViewController {
         
         featureModel._setParentViewController(self)
         
+        setFocusTextField()
+        
         // confirm button
 //        let cbtn_width:CGFloat = 80
 //        let cbtn_height:CGFloat = 25
@@ -73,6 +75,40 @@ class ViewController: UIViewController {
 //
 //        self.view.addSubview(confirm_btn)
         clear_btn.addTarget(nil, action: #selector(ViewController.clickClearButton), for: .touchUpInside)
+        
+        let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(tap))
+        view.addGestureRecognizer(tapGestureRecogniser)
+    }
+    
+    func tap(sender: UITapGestureRecognizer) {
+        if focusTextField.isFirstResponder {
+            focusTextField.resignFirstResponder()
+        }
+    }
+    
+    func setFocusTextField(){
+        
+        focusTextField.delegate=self;
+        // 尚未輸入時的預設顯示提示文字
+        focusTextField.placeholder = "請輸入文字"
+        
+        // 輸入框的樣式 這邊選擇圓角樣式
+        focusTextField.borderStyle = .roundedRect
+        
+        // 輸入框右邊顯示清除按鈕時機 這邊選擇當編輯時顯示
+        focusTextField.clearButtonMode = .whileEditing
+        
+        // 輸入框適用的鍵盤 這邊選擇 適用輸入 Email 的鍵盤(會有 @ 跟 . 可供輸入)
+        focusTextField.keyboardType = .default
+        
+        // 鍵盤上的 return 鍵樣式 這邊選擇 Done
+        focusTextField.returnKeyType = .done
+    }
+    
+    //without this, text field can't loose focus
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {   //delegate method
+        textField.resignFirstResponder()
+        return true
     }
 
     override func didReceiveMemoryWarning() {
@@ -82,6 +118,8 @@ class ViewController: UIViewController {
     
     func clickClearButton(){
         featureButtonView.clearFeatureButton()
+        focusSelectView.clearFocusButton()
+        focusTextField.text = ""
     }
 
     func clickConfirmButton(sender: UIButton){
@@ -92,7 +130,7 @@ class ViewController: UIViewController {
 //                          options: .transitionCrossDissolve,
 //                          animations: { sender.isHighlighted = false },
 //                          completion: nil)
-        
+//        
     }
     
     func updatePredict(){
