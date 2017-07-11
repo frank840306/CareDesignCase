@@ -38,6 +38,7 @@ class kerasModel:
 
 	def __init__(self, modelname):
 		self.name = modelname
+		self.savepath = 'mdl/'
 
 	def trainModel(self, file, input_d, output_d):
 		f = open(file, 'r')
@@ -62,9 +63,9 @@ class kerasModel:
 		X_valid = (X_valid - train_min) / (train_max - train_min)
 		Y_valid = Data[split_idx:, input_d:]
 
-		with open(self.name + '_max.p', 'wb') as fmax:
+		with open(self.savepath + self.name + '_max.p', 'wb') as fmax:
 			pickle.dump(train_max, fmax)
-		with open(self.name + '_min.p', 'wb') as fmin:
+		with open(self.savepath + self.name + '_min.p', 'wb') as fmin:
 			pickle.dump(train_min, fmin)
 
 		#model
@@ -75,13 +76,13 @@ class kerasModel:
 		model.add(Activation('sigmoid'))
 		model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 		model.fit(X_train, Y_train, epochs=30, batch_size=8, validation_data=(X_valid, Y_valid))
-		model.save(self.name + '_model.h5')
+		model.save(self.savepath + self.name + '_model.h5')
 
 	def predictFocus(self, input):
 		try:
-			train_max = pickle.load(open(self.name + '_max.p', 'rb'))
-			train_min = pickle.load(open(self.name + '_min.p', 'rb'))
-			model = load_model(self.name + '_model.h5')
+			train_max = pickle.load(open(self.savepath + self.name + '_max.p', 'rb'))
+			train_min = pickle.load(open(self.savepath + self.name + '_min.p', 'rb'))
+			model = load_model(self.savepath + self.name + '_model.h5')
 		except:
 			print ("You don't have the normalization files or the model file. Please train a model first.")
 			return
@@ -96,7 +97,6 @@ class kerasModel:
 
 '''
 <using example>
-
 ex = [0,1,1,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,78,158,90,163,203,147,4.3]
 m = kerasModel('0711')
 m.trainModel('31_14.csv', 37, 14)
