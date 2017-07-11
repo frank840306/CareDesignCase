@@ -30,7 +30,7 @@ class kerasModel:
 
 		predictFocus(input)
 		[parameters]
-			input : a list of features (ex. [0, 1, 0, 0, 0, 1, 51, 8.7] if input_d is 8)
+			input : a matrix of features (ex. [[0, 1, 0, 0, 0, 1, 51, 8.7]] if input_d is 8)
 		[output]
 			return : a sorted list of focus index (ex. [2, 4, 1, 0, 3] if output_d is 5)
 	
@@ -38,6 +38,7 @@ class kerasModel:
 
 	def __init__(self, modelname):
 		self.name = modelname
+		self.savepath = 'mdl/'
 
 	def trainModel(self, file, input_d, output_d):
 		f = open(file, 'r')
@@ -62,9 +63,9 @@ class kerasModel:
 		X_valid = (X_valid - train_min) / (train_max - train_min)
 		Y_valid = Data[split_idx:, input_d:]
 
-		with open(self.name + '_max.p', 'w') as fmax:
+		with open(self.savepath + self.name + '_max.p', 'wb') as fmax:
 			pickle.dump(train_max, fmax)
-		with open(self.name + '_min.p', 'w') as fmin:
+		with open(self.savepath + self.name + '_min.p', 'wb') as fmin:
 			pickle.dump(train_min, fmin)
 
 		#model
@@ -75,31 +76,35 @@ class kerasModel:
 		model.add(Activation('sigmoid'))
 		model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 		model.fit(X_train, Y_train, epochs=30, batch_size=8, validation_data=(X_valid, Y_valid))
-		model.save(self.name + '_model.h5')
+		model.save(self.savepath + self.name + '_model.h5')
 
-	def predictFocus(self, input):
+	def predictFocus(self, inputs, discount=0.3):
 		try:
-			train_max = pickle.load(open(self.name + '_max.p', 'r'))
-			train_min = pickle.load(open(self.name + '_min.p', 'r'))
-			model = load_model(self.name + '_model.h5')
+			train_max = pickle.load(open(self.savepath + self.name + '_max.p', 'rb'))
+			train_min = pickle.load(open(self.savepath + self.name + '_min.p', 'rb'))
+			model = load_model(self.savepath + self.name + '_model.h5')
 		except:
 			print ("You don't have the normalization files or the model file. Please train a model first.")
 			return
 		try:
-			x = (np.array([input]) - train_min) / (train_max - train_min)
+			x = (np.array(inputs) - train_min) / (train_max - train_min)
 		except:
 			print ("the input format is wrong!")
 			return
-		pred = model.predict(x)[0]
-		sorted_pred = np.argsort(pred)[::-1]
+		input_len = len(x)
+		pred = model.predict_on_batch(x)
+		output_dim = len(pred[0])
+		final_p = np.zeros(output_dim)
+		for i in range(input_len):
+			final_p += pred[i] * (discount ** (input_len-1-i))
+		sorted_pred = np.argsort(final_p)[::-1]
 		return list(sorted_pred)
 
 '''
-<using example>
-
-ex = [0,1,1,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,78,158,90,163,203,147,4.3]
-m = kerasModel('0709')
-m.trainModel('31_14.csv', 37, 14)
+#<using example>
+ex = [[0,1,1,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,78,158,90,163,203,147,4.3]]
+m = kerasModel('0711')
+#m.trainModel('31_14.csv', 37, 14)
 p = m.predictFocus(ex)
 print (p)
 '''
