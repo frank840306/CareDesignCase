@@ -18,7 +18,7 @@ class RandomForestModel:
 		outputdata2 = []
 		for i, row in enumerate(inputdata):
 			for j, element in enumerate(outputdata[i]):
-				if element == '1':
+				if element == '1' or element == '1.0':
 					inputdata2.append(row)
 					outputdata2.append(j)
 		#print(len(outputdata2))

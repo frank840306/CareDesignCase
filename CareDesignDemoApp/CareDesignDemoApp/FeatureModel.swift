@@ -60,8 +60,17 @@ class FeatureModel{
     
     func getFocusPrediction(_ isFeatured:[Bool]){
         var taskFlag:Bool = false
+        var url_arg:String = "?hospital=1"
+        for index in 0...isFeatured.count-1{
+            if(isFeatured[index]){
+                url_arg += "&f"+String(index)+"=1"
+            }
+        }
         
-        let task = URLSession.shared.dataTask(with: URL(string: predict_url)!){
+        let request_url = predict_url+url_arg
+        print("request = " + request_url)
+        
+        let task = URLSession.shared.dataTask(with: URL(string: request_url)!){
             data, response, error in
             guard error == nil else {
                 print(error!)

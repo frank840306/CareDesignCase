@@ -62,7 +62,7 @@ class FocusButton: UIButton{
 
 class FocusSelectView: UIView{
     var inputField:UITextField!
-    let focusRecommendNum = 5
+    var focusRecommendNum = 5
     let focusButtonList:[FocusButton]! = []
     
     var fullSize:CGRect!
@@ -108,7 +108,10 @@ class FocusSelectView: UIView{
     }
     
     func updateBtn(_ focusList: [String]){
-        
+        focusRecommendNum = focusList.count
+        if(focusRecommendNum > 5) {
+            focusRecommendNum = 5
+        }
         for index in 0...focusRecommendNum-1{
             focusButtonList[index].setTitle(focusList[index], for: .normal)
             focusButtonList[index].titleLabel!.text = focusList[index]
