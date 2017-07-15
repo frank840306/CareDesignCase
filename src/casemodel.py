@@ -60,10 +60,10 @@ class kerasModel:
 		train_max = X_train.max(axis=0) + 1e-8
 		train_min = X_train.min(axis=0)
 		X_train = (X_train - train_min) / (train_max - train_min)
-		Y_train = Data[:split_idx, input_d:input_d+1]
+		Y_train = Data[:split_idx, input_d:]
 		X_valid = Data[split_idx:, :input_d]
 		X_valid = (X_valid - train_min) / (train_max - train_min)
-		Y_valid = Data[split_idx:, input_d:input_d+1]
+		Y_valid = Data[split_idx:, input_d:]
 
 		with open(self.savepath + self.name + '_max.p', 'wb') as fmax:
 			pickle.dump(train_max, fmax)
@@ -107,7 +107,7 @@ class kerasModel:
 '''
 #<using example>
 ex = [[1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,49,130,70,99,141,144,4.8]]
-m = kerasModel('0712')
+m = kerasModel('0715')
 m.trainModel('31_14.csv', 37, 14)
 p = m.predictFocus(ex)
 print (p)
