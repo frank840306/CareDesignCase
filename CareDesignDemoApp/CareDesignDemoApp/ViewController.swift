@@ -12,6 +12,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
 
     var fullSize:CGSize!
     var featureList = ["胸悶", "疼痛", "呼吸困難", "蒼白", "血壓不穩", "步態不穩"]
+    var featureFloatList = [String]()
+    var featureDict:[String:[String]]?
     
     var featureModel = FeatureModel()
     var featureButtonView:FeatureButtonView!
@@ -24,6 +26,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var confirm_btn: UIButton!
     @IBOutlet weak var clear_btn: UIButton!
 
+    var hospitalName:String? = "example_31_14"
+    @IBOutlet weak var hospitalInputField: UITextField!
+    @IBOutlet weak var hospitalInputBtn: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -34,15 +39,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.title = "智慧紀錄"
         self.view.backgroundColor = UIColor.init(red: 1, green: 1, blue: 1, alpha: 1)
         
-        // load feature model
-        featureList = featureModel.getFeatureList()
-        
-        // add feature Button view
-        featureButtonView = FeatureButtonView(frame: featureButtonViewPlaceholder.frame)
-        featureButtonView.setFeatureList(featureList: featureList)
-        featureButtonView._setParentViewController(self)
-        featureButtonViewPlaceholder.removeFromSuperview()
-        self.view.addSubview(featureButtonView)
+        //        featureButtonViewPlaceholder.removeFromSuperview()
+        featureButtonViewPlaceholder.isHidden = true
+        updateFeatureButton()
         
         focusSelectView = FocusSelectView(frame: focusSelectViewPlaceholder.frame)
         focusSelectView._setParentViewController(self)
@@ -74,23 +73,41 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
 //
 //        self.view.addSubview(confirm_btn)
-        clear_btn.addTarget(nil, action: #selector(ViewController.clickClearButton), for: .touchUpInside)
+        
+        setButtons()
         
         let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(tap))
         view.addGestureRecognizer(tapGestureRecogniser)
     }
     
     func tap(sender: UITapGestureRecognizer) {
-        if focusTextField.isFirstResponder {
-            focusTextField.resignFirstResponder()
+        resignFirstResponderFromTextField()
+    }
+    func resignFirstResponderFromTextField(){
+        let textFieldList = [focusTextField, hospitalInputField]
+        
+        for textFiled in textFieldList{
+            if (textFiled != nil){
+                if (textFiled!.isFirstResponder) {
+                    textFiled!.resignFirstResponder()
+                }
+            }
         }
+        
+        featureButtonView.resignFistResponderForFields()
+    }
+    
+    func setButtons(){
+        clear_btn.addTarget(nil, action: #selector(ViewController.clickClearButton), for: .touchUpInside)
+        
+        hospitalInputBtn.addTarget(nil, action: #selector(ViewController.clickHospitalButton), for: .touchUpInside)
     }
     
     func setFocusTextField(){
         
         focusTextField.delegate=self;
         // 尚未輸入時的預設顯示提示文字
-        focusTextField.placeholder = "請輸入文字"
+        focusTextField.placeholder = "請輸入焦點"
         
         // 輸入框的樣式 這邊選擇圓角樣式
         focusTextField.borderStyle = .roundedRect
@@ -103,6 +120,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         // 鍵盤上的 return 鍵樣式 這邊選擇 Done
         focusTextField.returnKeyType = .done
+        
+        hospitalInputField.delegate = self;
+        
+        hospitalInputField.placeholder = "請輸入醫院"
     }
     
     //without this, text field can't loose focus
@@ -116,10 +137,25 @@ class ViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    func clickHospitalButton(){
+        if let new_name = hospitalInputField.text{
+            hospitalName = new_name
+        }else if let old_name = hospitalName{
+            hospitalInputField.text = old_name
+        }
+        
+        //update feature button for this hospital
+        updateFeatureButton()
+        
+        resignFirstResponderFromTextField()
+    }
+    
     func clickClearButton(){
         featureButtonView.clearFeatureButton()
         focusSelectView.clearFocusButton()
         focusTextField.text = ""
+        
+        resignFirstResponderFromTextField()
     }
 
     func clickConfirmButton(sender: UIButton){
@@ -131,11 +167,29 @@ class ViewController: UIViewController, UITextFieldDelegate {
 //                          animations: { sender.isHighlighted = false },
 //                          completion: nil)
 //        
+        resignFirstResponderFromTextField()
     }
     
     func updatePredict(){
         let isFeatured = featureButtonView.getFeature()
-        featureModel.getFocusPrediction(isFeatured)
+        let floats = featureButtonView.getFloats()
+        featureModel.getFocusPrediction(isFeatured, floats)
+    }
+    
+    func updateFeatureButton(){
+        // load feature model
+        featureModel.setHospital(hospital: self.hospitalName!)
+        
+        featureDict = featureModel.getFeatureDict()
+        featureList = (featureDict?["Bool"]) ?? ["feature","list","error"]
+        featureFloatList = (featureDict?["Float"]) ?? ["feature","float","error"]
+        
+        // add feature Button view
+//        featureButtonView.removeFromSuperview()
+        featureButtonView = FeatureButtonView(frame: featureButtonViewPlaceholder.frame)
+        featureButtonView.setFeatureList(featureList: featureList, featureFloatList: featureFloatList)
+        featureButtonView._setParentViewController(self)
+        self.view.addSubview(featureButtonView)
     }
     
     func updataFocusButton(){
