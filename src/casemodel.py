@@ -54,14 +54,16 @@ class kerasModel:
 		data_length = len(Data)
 		split_idx = int(data_length*0.8)
 
+		np.random.shuffle(Data)
+
 		X_train = Data[:split_idx, :input_d]
-		train_max = X_train.max(axis=0)
+		train_max = X_train.max(axis=0) + 1e-8
 		train_min = X_train.min(axis=0)
 		X_train = (X_train - train_min) / (train_max - train_min)
-		Y_train = Data[:split_idx, input_d:]
+		Y_train = Data[:split_idx, input_d:input_d+1]
 		X_valid = Data[split_idx:, :input_d]
 		X_valid = (X_valid - train_min) / (train_max - train_min)
-		Y_valid = Data[split_idx:, input_d:]
+		Y_valid = Data[split_idx:, input_d:input_d+1]
 
 		with open(self.savepath + self.name + '_max.p', 'wb') as fmax:
 			pickle.dump(train_max, fmax)
@@ -75,7 +77,9 @@ class kerasModel:
 		model.add(Dense(units=output_d))
 		model.add(Activation('sigmoid'))
 		model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-		model.fit(X_train, Y_train, epochs=30, batch_size=8, validation_data=(X_valid, Y_valid))
+		#model.add(Activation('softmax'))
+		#model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+		model.fit(X_train, Y_train, epochs=10, batch_size=4, validation_data=(X_valid, Y_valid))
 		model.save(self.savepath + self.name + '_model.h5')
 
 	def predictFocus(self, inputs, discount=0.3):
@@ -91,9 +95,8 @@ class kerasModel:
 		except:
 			print ("the input format is wrong!")
 			return
-		print('XDD')
 		input_len = len(x)
-		pred = model.predict_on_batch(x)
+		pred = model.predict(x)
 		output_dim = len(pred[0])
 		final_p = np.zeros(output_dim)
 		for i in range(input_len):
@@ -103,9 +106,9 @@ class kerasModel:
 
 '''
 #<using example>
-ex = [[0,1,1,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,78,158,90,163,203,147,4.3]]
-m = kerasModel('0711')
-#m.trainModel('31_14.csv', 37, 14)
+ex = [[1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,49,130,70,99,141,144,4.8]]
+m = kerasModel('0712')
+m.trainModel('31_14.csv', 37, 14)
 p = m.predictFocus(ex)
 print (p)
 '''
