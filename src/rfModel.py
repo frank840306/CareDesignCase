@@ -1,26 +1,40 @@
 import sys  
 from sklearn.ensemble import RandomForestClassifier
-import pandas
 import numpy as np
 import pickle
+import csv
 
 class RandomForestModel:
 	def __init__(self, modelname):
 		self.name = modelname
 		self.savepath = 'mdl/'
 	def trainModel(self, file, input_d, output_d):
-		data = pandas.read_csv(file, encoding = "latin1", header = None)
-		data = data.as_matrix()
+		f = open(file, 'r', encoding = "latin1")
+		cr = csv.reader(f)
+		data = []
+		for i, line in enumerate(cr):
+			if i == 0:
+				continue
+			else:
+				data.append(list(map(float, line)))
+		f.close()
+		data = np.array(data)
+		print (data)
+		#data = pandas.read_csv(file, encoding = "latin1", header = None)
+		#data = data.as_matrix()
 		#len(data[0])
-		inputdata = data[1: , :input_d]
-		outputdata = data[1: , input_d:]
+		inputdata = data[0: , :input_d]
+		outputdata = data[0: , input_d:]
 		inputdata2 = []
 		outputdata2 = []
 		for i, row in enumerate(inputdata):
 			for j, element in enumerate(outputdata[i]):
-				if element == '1' or element == '1.0':
+				if element == 1:
 					inputdata2.append(row)
 					outputdata2.append(j)
+		#singlelabeldata = np.c_[inputdata2, outputdata2]
+		#df = pandas.DataFrame(data = singlelabeldata)
+		#df.to_csv('suckmydick.csv', index=False, header=False, index_label=False)
 		#print(len(outputdata2))
 		#print(len(inputdata2))
 		rf = RandomForestClassifier(n_estimators=80)
