@@ -20,4 +20,5 @@ elif [ $1 = clean ]; then
 	echo 'remove file'
 	rm -rf ${data_dir}/*.json
 	rm -rf ${mdl_dir}/*
+	rm -rf src/__pycache__/ 
 fi
