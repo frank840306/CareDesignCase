@@ -6,7 +6,29 @@ default_path = {
 	'SRC_DIR'		: './src',
 	'MDL_DIR'		: './mdl',
 	'HOSPITALJSON'	: './data/hospitalList.json',
-	'HOSPITAL2MODELJSON'		: './data/hospital2model.json',	# default size = 5 / hospital, from old to new
+	'HOSPITAL2MODELJSON'	: './data/hospital2model.json',	# default file size = 10 / hospital, 
+															# default model size = 5 / file, from old to new
+															# type = dict
+															# ex: hospital2model['NTU']['example_31_14'] = 
+															# 	['NTU_example_31_14_20170711', 'NTU_example_31_14_20170712', 'NTU_example_31_14_20170713']
+															# 
+	'TRAININGQUEUEJSON'		: './data/trainingQueue.json',		# default size = 5 / file, type = list, from old to new
+}
+
+default_config = {
+	'FILE_NUM_PER_HOSPITAL'	: 10,		# the limit of CSV file maintained in a hospital
+	'MODEL_NUM_PER_FILE'	: 5,		# the limit of history model number in a CSV file 
+	'TRAINING_QUEUE_SIZE'	: float('inf'),	# the limit of the size of training queue
+	'TRAINING_SKIP_NUM'		: 10,		# no task found after #iter will terminate the thread
+	'TRAINING_METHOD'		: 'rf'		# random forest		
+}
+
+status = {
+	'NoTask'	: 'NoTask',
+	'Opened'	: 'Opened', 
+	'Ongoing'	: 'Ongoing', 
+	'Closed'	: 'Closed', 
+	'Suspended'	: 'Suspended', 
 }
 
 def XLSX2CSV(xlsx):

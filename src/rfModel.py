@@ -1,13 +1,15 @@
 import sys  
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.externals import joblib
 import numpy as np
 import pickle
 import csv
+from utils import *
 
 class RandomForestModel:
-	def __init__(self, modelname):
+	def __init__(self, modelname, hospital):
 		self.name = modelname
-		self.savepath = 'mdl/'
+		self.savepath = './mdl/' + hospital + '/'
 	def trainModel(self, file, input_d, output_d):
 		f = open(file, 'r', encoding = "latin1")
 		cr = csv.reader(f)
@@ -19,7 +21,6 @@ class RandomForestModel:
 				data.append(list(map(float, line)))
 		f.close()
 		data = np.array(data)
-		print (data)
 		#data = pandas.read_csv(file, encoding = "latin1", header = None)
 		#data = data.as_matrix()
 		#len(data[0])
@@ -36,15 +37,20 @@ class RandomForestModel:
 		#df = pandas.DataFrame(data = singlelabeldata)
 		#df.to_csv('suckmydick.csv', index=False, header=False, index_label=False)
 		#print(len(outputdata2))
-		#print(len(inputdata2))
+		print(len(inputdata2))
 		rf = RandomForestClassifier(n_estimators=80)
 		rf.fit(inputdata2, outputdata2)
+		print('after training')
+		# joblib.dump(rf, self.savepath + self.name + '.pkl')
+		# writePickle(rf, self.savepath + self.name + '.pkl')
 		with open(self.savepath + self.name + '.pkl', 'wb') as f:
 			pickle.dump(rf, f)
+		print('after pickle')
 	def predictFocus(self, input):
 		try:
 			with open(self.savepath + self.name + '.pkl', 'rb') as f:
 				rf = pickle.load(f)
+			# rf = joblib.load(self.savepath + self.name + '.pkl')
 		except:
 			print("You don't have the model file. Please train a model first.")
 		try:
@@ -67,3 +73,7 @@ class RandomForestModel:
 		return outputlist
 #print(type(inputdata2[0]))
 #print(type(inputdata2))
+
+# rfm = RandomForestModel('NTU', 'NTU')
+# rfm.trainModel('./data/example_37_14.csv', 37, 14)
+# rfm.predictFocus()
