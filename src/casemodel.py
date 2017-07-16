@@ -4,7 +4,7 @@ from keras.models import Sequential
 from keras.layers import Dense, Activation
 from keras.optimizers import SGD, Adagrad, Adadelta, Adam
 from keras.models import load_model
-import pickle
+import pickle, time
 
 class kerasModel:
 	'''
@@ -36,9 +36,9 @@ class kerasModel:
 	
 	'''
 
-	def __init__(self, modelname):
+	def __init__(self, modelname, hospital):
 		self.name = modelname
-		self.savepath = 'mdl/'
+		self.savepath = 'mdl/' + hospital + '/'
 
 	def trainModel(self, file, input_d, output_d):
 		f = open(file, 'r')
@@ -64,13 +64,13 @@ class kerasModel:
 		X_valid = Data[split_idx:, :input_d]
 		X_valid = (X_valid - train_min) / (train_max - train_min)
 		Y_valid = Data[split_idx:, input_d:]
-
 		with open(self.savepath + self.name + '_max.p', 'wb') as fmax:
 			pickle.dump(train_max, fmax)
 		with open(self.savepath + self.name + '_min.p', 'wb') as fmin:
 			pickle.dump(train_min, fmin)
-
 		#model
+		time.sleep(1)
+		
 		model = Sequential()
 		model.add(Dense(units=32, input_dim=input_d))
 		model.add(Activation('relu'))
@@ -81,7 +81,7 @@ class kerasModel:
 		#model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 		model.fit(X_train, Y_train, epochs=10, batch_size=4, validation_data=(X_valid, Y_valid))
 		model.save(self.savepath + self.name + '_model.h5')
-
+		
 	def predictFocus(self, inputs, discount=0.3):
 		try:
 			train_max = pickle.load(open(self.savepath + self.name + '_max.p', 'rb'))
