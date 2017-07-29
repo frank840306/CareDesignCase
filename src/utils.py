@@ -20,7 +20,7 @@ default_config = {
 	'MODEL_NUM_PER_FILE'	: 5,		# the limit of history model number in a CSV file 
 	'TRAINING_QUEUE_SIZE'	: float('inf'),	# the limit of the size of training queue
 	'TRAINING_SKIP_NUM'		: 10,		# no task found after #iter will terminate the thread
-	'TRAINING_METHOD'		: 'rf'		# random forest		
+	'TRAINING_METHOD'		: 'rf'		# random forest, keras	
 }
 
 status = {

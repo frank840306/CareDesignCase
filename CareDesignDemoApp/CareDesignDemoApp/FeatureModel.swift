@@ -10,7 +10,8 @@ import Foundation
 
 class FeatureModel{
     
-    var hospital :String = "example_31_14"
+    var hospital :String = "NTU1"
+    var fileName: String = "example_37_14_bool"
     var documentsPath :String!
     let debug_url = "http://127.0.0.1:5000/"
     var my_url:String!
@@ -31,6 +32,9 @@ class FeatureModel{
     func setHospital(hospital: String){
         self.hospital = hospital
     }
+    func setFileName(fileName: String){
+        self.fileName = fileName
+    }
     
     func _setParentViewController(_ vc: ViewController){
         self.parentViewController = vc
@@ -38,7 +42,7 @@ class FeatureModel{
     
     func getFeatureDict() -> [String: [String]]{
         var taskFlag:Bool = false
-        let url_arg:String = "?hospital="+hospital
+        let url_arg:String = "?hospital="+hospital+"&filename="+fileName
         let request_url = feature_url+url_arg
         print("request = " + request_url)
         
@@ -69,7 +73,7 @@ class FeatureModel{
     
     func getFocusPrediction(_ isFeatured:[Bool], _ floats: [Float]){
         var taskFlag:Bool = false
-        var url_arg:String = "?hospital="+hospital
+        var url_arg:String = "?hospital="+hospital+"&filename="+fileName
         for index in 0...isFeatured.count-1{
             if(isFeatured[index]){
                 url_arg += "&f"+String(index)+"=1"

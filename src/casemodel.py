@@ -112,3 +112,11 @@ m.trainModel('31_14.csv', 37, 14)
 p = m.predictFocus(ex)
 print (p)
 '''
+'''
+m = kerasModel('0715')
+m.trainModel('31_14.csv', 37, 14)
+p = m.predictFocus(ex)
+'''
+
+
+

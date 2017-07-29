@@ -26,7 +26,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var confirm_btn: UIButton!
     @IBOutlet weak var clear_btn: UIButton!
 
-    var hospitalName:String? = "example_31_14"
+    var fileInputName:String? = "example_37_14"
+    @IBOutlet weak var fileInputField: UITextField!
+    @IBOutlet weak var fileInputBtn: UIButton!
+    var hospitalName:String? = "NTU1"
     @IBOutlet weak var hospitalInputField: UITextField!
     @IBOutlet weak var hospitalInputBtn: UIButton!
     override func viewDidLoad() {
@@ -84,7 +87,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         resignFirstResponderFromTextField()
     }
     func resignFirstResponderFromTextField(){
-        let textFieldList = [focusTextField, hospitalInputField]
+        let textFieldList = [focusTextField, hospitalInputField, fileInputField]
         
         for textFiled in textFieldList{
             if (textFiled != nil){
@@ -101,6 +104,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
         clear_btn.addTarget(nil, action: #selector(ViewController.clickClearButton), for: .touchUpInside)
         
         hospitalInputBtn.addTarget(nil, action: #selector(ViewController.clickHospitalButton), for: .touchUpInside)
+        
+        fileInputBtn.addTarget(nil, action: #selector(ViewController.clickHospitalButton), for: .touchUpInside)
     }
     
     func setFocusTextField(){
@@ -121,9 +126,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
         // 鍵盤上的 return 鍵樣式 這邊選擇 Done
         focusTextField.returnKeyType = .done
         
+        fileInputField.delegate = self;
         hospitalInputField.delegate = self;
         
         hospitalInputField.placeholder = "請輸入醫院"
+        hospitalInputField.text = hospitalName
+        fileInputField.placeholder = "請輸入醫院"
+        fileInputField.text = fileInputName
     }
     
     //without this, text field can't loose focus
@@ -140,8 +149,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func clickHospitalButton(){
         if let new_name = hospitalInputField.text{
             hospitalName = new_name
-        }else if let old_name = hospitalName{
-            hospitalInputField.text = old_name
+        }
+        if let new_name = fileInputField.text{
+            fileInputName = new_name
         }
         
         //update feature button for this hospital
@@ -179,6 +189,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func updateFeatureButton(){
         // load feature model
         featureModel.setHospital(hospital: self.hospitalName!)
+        featureModel.setFileName(fileName: self.fileInputName!)
+        print("update feature")
         
         featureDict = featureModel.getFeatureDict()
         featureList = (featureDict?["Bool"]) ?? ["feature","list","error"]

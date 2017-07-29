@@ -134,8 +134,22 @@ class TrainingManager:
 			
 			csv_header = open(os.path.join(self.data_dir, task['csvFile'])).readline()[:-1].split(',')		
 			task['inputFeature'] = [val for val in csv_header if 'IN' in val]
+			task['BoolFeature'] = []
+			task['FloatFeature'] = []
 			for idx in range(len(task['inputFeature'])):
 				task['inputFeature'][idx] = re.sub(r'IN\d+', '', task['inputFeature'][idx])
+				if 'Bool' in task['inputFeature'][idx]:
+					task['inputFeature'][idx] = re.sub(r'Bool', '', task['inputFeature'][idx])
+					task['BoolFeature'].append(task['inputFeature'][idx])
+				elif 'Float' in task['inputFeature'][idx]:
+					task['inputFeature'][idx] = re.sub(r'Float', '', task['inputFeature'][idx])
+					task['FloatFeature'].append(task['inputFeature'][idx])
+
+
+
+				task['inputFeature'][idx] = re.sub(r'Bool\d+', '', task['inputFeature'][idx])
+				task['inputFeature'][idx] = re.sub(r'Float\d+', '', task['inputFeature'][idx])
+				print(task['inputFeature'][idx])
 			task['outputFeature'] = [val for val in csv_header if 'OUT' in val]
 			for idx in range(len(task['outputFeature'])):
 				task['outputFeature'][idx] = re.sub(r'OUT\d+', '', task['outputFeature'][idx])		
