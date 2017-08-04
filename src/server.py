@@ -75,7 +75,7 @@ def create_app(configfile=None):
 			filename = str(request.args['filename'])
 			features = hm.getInputFeature(hospital, filename)
 		else:
-			features = []
+			features = {}
 		return json.dumps(features, indent=4, ensure_ascii=False)
 	
 	# Usgae:

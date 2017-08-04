@@ -6,6 +6,7 @@ root_dir=.
 src_dir=${root_dir}/src
 data_dir=${root_dir}/data
 mdl_dir=${root_dir}/mdl
+export PYTHONPATH=src:${PYTHONPATH} 
 
 if [ $1 = debug ]; then
 	host=127.0.0.1

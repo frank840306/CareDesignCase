@@ -71,9 +71,10 @@ class HospitalManager:
 		if hospital in self.hospitalList:
 			if filename in self.hospital2model[hospital]:
 				task = self.tm.getTask(hospital, filename, self.hospital2model[hospital][filename][-1])
-				features['Bool'] = task['inputFeature']
+				# features['Bool'] = {'Bool' : task['BoolFeature'], 'Float' : task['FloatFeature']}
 				# TODO:
-				# features['Float']
+				# features['Float']	## 2017.7.18 bigyo modify this
+				features = {'Bool' : task['BoolFeature'], 'Float' : task['FloatFeature']}
 				msg = 'Success get features from CSV file [ %s ] in [ %s ]' % (filename, hospital)	 
 			else:
 				msg = 'Current hospital [ %s ] doesn\'t have  CSV file [ %s ]' % (hospital, filename)
