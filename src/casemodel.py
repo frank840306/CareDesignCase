@@ -2,9 +2,10 @@ import csv
 import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense, Activation
-from keras.optimizers import SGD, Adagrad, Adadelta, Adam
+from keras.optimizers import Adam
 from keras.models import load_model
-import pickle, time
+import pickle
+import time
 
 class kerasModel:
 	'''
@@ -12,10 +13,11 @@ class kerasModel:
 
 	<class initialize>
 
-		kerasModel(modelname)
+		kerasModel(modelname, hospital)
 		[parameters]
 			modelname : name of the model (string)
-
+			hospital : name of hospital (string)
+		(p.s use hospital and model name can correctly link to the right model)
 
 	<functions in class>
 
@@ -77,8 +79,6 @@ class kerasModel:
 		model.add(Dense(units=output_d))
 		model.add(Activation('sigmoid'))
 		model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-		#model.add(Activation('softmax'))
-		#model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 		model.fit(X_train, Y_train, epochs=10, batch_size=4, validation_data=(X_valid, Y_valid))
 		model.save(self.savepath + self.name + '_model.h5')
 		
