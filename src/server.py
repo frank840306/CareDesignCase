@@ -12,7 +12,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
 # Bigyo:
-from adim import *
+import admin
 
 import os, argparse, logging, atexit, json, time, signal, re
 
@@ -184,6 +184,11 @@ def create_app(configfile=None):
 			return 'Please give a hospital name'
 		else:
 			return 'Please give a CSV file and hospital name'
+
+
+	@app.route('/admin')
+	def routeAdmin():
+		return admin.hello()
 
 	signal.signal(signal.SIGINT, hm.shutdown)
 
