@@ -1,1 +1,1 @@
-web: ./run_server.sh debug
+web: ./run_server.sh deploy
