@@ -1,1 +1,1 @@
-web: ./run_server.sh deploy
+web: gunicorn app:app --log-file=-
