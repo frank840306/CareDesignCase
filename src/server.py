@@ -11,8 +11,6 @@ from flask_appconfig import AppConfig
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
-# Bigyo:
-import admin
 
 import os, argparse, logging, atexit, json, time, signal, re
 
@@ -193,6 +191,9 @@ def create_app(configfile=None):
 	signal.signal(signal.SIGINT, hm.shutdown)
 
 	return app
+
+
+
 if __name__ == '__main__':
 	setupLogger()
 	logger = logging.getLogger(__name__)
@@ -200,6 +201,6 @@ if __name__ == '__main__':
 	if args.mode == 'debug':
 		logger.info('Running server as [ %s ] mode on [ %s : %d ]' % (args.mode, args.host, args.port))
 		create_app().run(debug=False, host=args.host, port=args.port)
-	if args.mode == 'deploy':
+	elif args.mode == 'deploy':
 		logger.info('Running server as [ %s ] mode on [ %s : %d ]' % (args.mode, args.host, args.port))
 		create_app().run(debug=False, host=args.host, port=args.port)
