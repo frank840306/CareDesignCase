@@ -111,10 +111,25 @@ class HospitalManager:
 				msg = 'Could not get specified task [ %s, %s, %s]' % (hospital, filename, self.hospital2model[hospital][filename][time])
 			else:
 				self.logger.info(data)
-				model = readPickle(task['modelClassFile'])
-				pred_idx = model.predictFocus(data)
-				pred = [focus[idx] for idx in pred_idx]
-				msg = 'Success predict result from model class[ %s ]' % (task['modelClassFile'])
+				# model = readPickle(task['modelClassFile'])
+				if task['method'] == 'keras':
+					model = kerasModel(task['modelName'], task['hospital'])
+				elif task['method'] == 'rf':
+					model = RandomForestModel(task['modelName'], task['hospital'])
+				else:
+					model = None
+				if model == None:
+					msg = 'Model [ %s, %s ] does not exists, with mothod [ %s     ]' % (task['modelName'], task['hospital'], task['method'])
+				else:
+					pred_idx = model.predictFocus(data)
+					pred = [focus[idx] for idx in pred_idx]
+					msg = 'Success predict result from model'
+
+				# model = readPickle(task['modelClassFile'])
+				# pred_idx = model.predictFocus(data)
+				# pred = [focus[idx] for idx in pred_idx]
+				# msg = 'Success predict result from model class[ %s ]' % (task['modelClassFile'])
+				
 		self.logger.info(msg)
 		return pred
 

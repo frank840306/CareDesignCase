@@ -22,7 +22,7 @@ class TrainingManager:
 		self.trainingSkipNum = trainingSkipNum
 		self.method = method
 		self.trainingThread = None
-		self.threadLock = threading.Lock()
+		# self.threadLock = threading.Lock()
 		self.showQueueInfo()
 
 	def train(self):
@@ -66,15 +66,15 @@ class TrainingManager:
 				# modelFile = curTask['modelName'] + '_model.h5' if curTask['method'] == 'keras' else curTask['modelName'] + '.pkl'
 				hospital_dir = os.path.join(self.mdl_dir, curTask['hospital'])
 				if modelFile not in os.listdir(hospital_dir):
-					if curTask['csvFile'] not in os.listdir(self.data_dir):
-						if curTask['xlsxFile'] in os.listdir(self.data_dir):
-							self.logger.info('Convert file format: XLSX --> CSV')
-							XLSX2CSV(os.path.join(self.data_dir, curTask['xlsxFile']))
-						else:
-							self.logger.info('Please upload CSV/XLSX formated file in [ %s ]' % (self.data_dir))
-					else:
-						self.logger.info('CSV exists --> do nothing')
-					csv_header = open(os.path.join(self.data_dir, curTask['csvFile'])).readline()[:-1].split(',')
+					# if curTask['csvFile'] not in os.listdir(self.data_dir):
+					# 	if curTask['xlsxFile'] in os.listdir(self.data_dir):
+					# 		self.logger.info('Convert file format: XLSX --> CSV')
+					# 		XLSX2CSV(os.path.join(self.data_dir, curTask['xlsxFile']))
+					# 	else:
+					# 		self.logge-r.info('Please upload CSV/XLSX formated file in [ %s ]' % (self.data_dir))
+					# else:
+					# 	self.logger.info('CSV exists --> do nothing')
+					# csv_header = open(os.path.join(self.data_dir, curTask['csvFile'])).readline()[:-1].split(',')
 					# curTask['inputFeature'] = [val for val in csv_header if 'IN' in val]
 					# curTask['outputFeature'] = [val for val in csv_header if 'OUT' in val]
 					# self.logger.info(curTask['input_d'])
@@ -86,16 +86,17 @@ class TrainingManager:
 					self.logger.info('Start training: args = ( %s, %d, %d)' % (os.path.join(self.data_dir, curTask['csvFile']), len(curTask['inputFeature']), len(curTask['outputFeature'])))
 					model.trainModel(os.path.join(self.data_dir, curTask['csvFile']), len(curTask['inputFeature']), len(curTask['outputFeature']))
 					
-					modelClassFile = os.path.join(hospital_dir, 'class_' + modelFile)
-					writePickle(model, modelClassFile)
-					curTask['modelClassFile'] = os.path.join(modelClassFile)
+					# modelClassFile = os.path.join(hospital_dir, 'class_' + modelFile)
+					# writePickle(model, modelClassFile)
+					# curTask['modelClassFile'] = os.path.join(modelClassFile)
 					curTask['status'] = status['Closed']
 					# self.setTaskStatus(curTask['hospital'], curTask['filename'], curTask['time'], status['Closed'])
 					self.logger.info(curTask['status'])
-					self.logger.info(self.trainingQueue[0]['status'])
+					# self.logger.info(self.trainingQueue[0]['status'])
 					
 				else:
 					self.logger.info('model exists --> skip training')
+					curTask['status'] = status['Closed']
 
 
 			
@@ -131,7 +132,16 @@ class TrainingManager:
 				'status'	: status['Opened'],
 				'method'	: self.method if specifiedMethod == None else specifiedMethod
 			}
-			
+			self.logger.info('Add new task named [ %s ]' % (task['modelName']))
+			if task['csvFile'] not in os.listdir(self.data_dir):
+				if task['xlsxFile'] in os.listdir(self.data_dir):
+					self.logger.info('Convert file format: XLSX --> CSV')
+					XLSX2CSV(os.path.join(self.data_dir, task['xlsxFile']))
+				else:
+					self.logger.info('Please upload CSV/XLSX formated file in     [ %s ]' % (self.data_dir))
+			else:
+				self.logger.info('CSV exists --> do nothing')
+
 			csv_header = open(os.path.join(self.data_dir, task['csvFile'])).readline()[:-1].split(',')		
 			task['inputFeature'] = [val for val in csv_header if 'IN' in val]
 			task['BoolFeature'] = []
@@ -149,7 +159,7 @@ class TrainingManager:
 
 				task['inputFeature'][idx] = re.sub(r'Bool\d+', '', task['inputFeature'][idx])
 				task['inputFeature'][idx] = re.sub(r'Float\d+', '', task['inputFeature'][idx])
-				print(task['inputFeature'][idx])
+				# print(task['inputFeature'][idx])
 			task['outputFeature'] = [val for val in csv_header if 'OUT' in val]
 			for idx in range(len(task['outputFeature'])):
 				task['outputFeature'][idx] = re.sub(r'OUT\d+', '', task['outputFeature'][idx])		
@@ -235,7 +245,7 @@ class TrainingManager:
 	def showQueueInfo(self):
 		self.logger.info('------------------- QUEUE INFO ---------------------')
 		for idx, task in enumerate(self.trainingQueue):
-			self.logger.info('%3d: model name: %15s, status: %10s, method: %10s' % (idx, task['modelName'], task['status'], task['method']))
+			self.logger.info('%3d: model name: %30s, status: %10s, method: %5s' % (idx, task['modelName'], task['status'], task['method']))
 		self.logger.info('----------------------------------------------------')
 
 	def shutdown(self):

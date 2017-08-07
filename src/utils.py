@@ -34,8 +34,8 @@ status = {
 def XLSX2CSV(xlsx):
 	wb = xlrd.open_workbook(xlsx)
 	sh = wb.sheet_by_name('Sheet1')
-	print(xlsx)
-	print(xlsx.split('.', 1)[0] + '.csv')
+	# print(xlsx)
+	# print(xlsx.split('.', 1)[0] + '.csv')
 	your_csv_file = open(xlsx.replace('xlsx', 'csv'), 'w', newline='')
 	wr = csv.writer(your_csv_file, quoting=csv.QUOTE_NONE)
 

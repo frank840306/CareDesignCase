@@ -92,7 +92,8 @@ def create_app(configfile=None):
 			data = [0] * (len(hm.getInputFeature(hospital, filename)['Bool']) + len(hm.getInputFeature(hospital, filename)['Float']))
 			for args in request.args:
 				if args != 'hospital' and args != 'filename':
-					data[int(args[1:])] = float(request.args[args])
+					if int(args[1:]) < len(data):
+						data[int(args[1:])] = float(request.args[args])
 			if 'time' in request.args:
 				time = int(request.args['time'])
 				pred_focus = hm.predictFocus(data, hospital, filename, time)
@@ -102,25 +103,25 @@ def create_app(configfile=None):
 			pred_focus = []
 		return json.dumps(pred_focus, indent=4, ensure_ascii=False)
 		
-		logger.info	(request.args)
-		# TODO:
-		# 1. check current hospital
-		cur_hospital = str(request.args['hospital'])
-		cur_features = [0] * 37
-		for args in request.args:
-			if args != 'hospital':
-				cur_features[int(args[1:])] = 1
-		logger.info('Features from client:')
-		logger.info([cur_features])
-		# 2. parse the feature clicked by user
-		# 3. feed the feature to the model and predict answer
-		pred_idx = km.predictFocus([cur_features])
-		# pred_idx = rfm.predictFocus(cur_features)
+		# logger.info	(request.args)
+		# # TODO:
+		# # 1. check current hospital
+		# cur_hospital = str(request.args['hospital'])
+		# cur_features = [0] * 37
+		# for args in request.args:
+		# 	if args != 'hospital':
+		# 		cur_features[int(args[1:])] = 1
+		# logger.info('Features from client:')
+		# logger.info([cur_features])
+		# # 2. parse the feature clicked by user
+		# # 3. feed the feature to the model and predict answer
+		# pred_idx = km.predictFocus([cur_features])
+		# # pred_idx = rfm.predictFocus(cur_features)
 		
-		logger.info('Predict result idx:')
-		logger.info(pred_idx)
-		pred = [results[val] for val in pred_idx]
-		return json.dumps(pred, indent=4, ensure_ascii=False)
+		# logger.info('Predict result idx:')
+		# logger.info(pred_idx)
+		# pred = [results[val] for val in pred_idx]
+		# return json.dumps(pred, indent=4, ensure_ascii=False)
 	@app.route('/update')
 	def update():
 		# TODO:
