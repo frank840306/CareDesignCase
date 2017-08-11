@@ -113,7 +113,8 @@ class HospitalManager:
 				self.logger.info(data)
 				# model = readPickle(task['modelClassFile'])
 				if task['method'] == 'keras':
-					model = kerasModel(task['modelName'], task['hospital'])
+					pass
+					# model = kerasModel(task['modelName'], task['hospital'])
 				elif task['method'] == 'rf':
 					model = RandomForestModel(task['modelName'], task['hospital'])
 				else:
