@@ -11,7 +11,7 @@ logger.info('Initial logger')
 app.config['SECRET_KEY'] = 'devkey'
 app.config['RECAPTCHA_PUBLIC_KEY'] = '6Mfol9cSAAAAADAkodaYl9wvQCwBMr3qGR_PPHcw'
 
-create_app(app)
+# create_app(app)
 create_view_route(app)
 
 
