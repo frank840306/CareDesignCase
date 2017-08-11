@@ -185,7 +185,8 @@ def mainPageView():
 
 @app.route('/admin')   
 def adminView():
-	return admin.hello()
+	the_time = datetime.now().strftime("%A, %d %b %Y %l:%M %p")
+	return render_template('main.html', time=the_time)
 
 ALLOWED_EXTENSIONS = set(['csv'])
 def allowed_file(filename):
@@ -220,7 +221,7 @@ def uploadView():
 
 @app.route('/uploads/<filename>')
 def upload(filename):
-	
+
 	return 'file uploaded: '+str(os.path.join(app.config['UPLOAD_FOLDER'],filename))
     # return send_from_directory(app.config['UPLOAD_FOLDER'],filename)
 
