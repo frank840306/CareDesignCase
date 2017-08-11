@@ -16,11 +16,12 @@ def create_view_route(app):
 	@app.route('/')
 	def mainPageView():
 		the_time = datetime.now().strftime("%A, %d %b %Y %l:%M %p")
-		return """
-	    <h1>Hello Cared Design</h1>
-	    <p>It is currently {time}.</p>
-	    <p>AddHospital: http://127.0.0.1:5000/addHospital?hospital=NTU1</p>
-	    """.format(time=the_time)
+		# return """
+	 #    <h1>Hello Cared Design</h1>
+	 #    <p>It is currently {time}.</p>
+	 #    <p>AddHospital: http://127.0.0.1:5000/addHospital?hospital=NTU1</p>
+	 #    """.format(time=the_time)
+		return render_template('main.html', time=the_time)
 
 	@app.route('/admin')   
 	def adminView():
