@@ -20,7 +20,7 @@ def trainModel(filename):
 	print ('XDDD : ' + filename)
 	return
 
-def create_app(configfile=None):
+def create_app(app, configfile=None):
 	root_dir = '.'
 	data_dir = os.path.join(root_dir, 'data')
 	mdl_dir = os.path.join(root_dir, 'mdl')
@@ -48,7 +48,6 @@ def create_app(configfile=None):
 
 
 	logger.info('Initial Flask app')
-	app = Flask(__name__)
 	AppConfig(app, configfile)
 	app.config['SECRET_KEY'] = 'devkey'
 	app.config['RECAPTCHA_PUBLIC_KEY'] = '6Mfol9cSAAAAADAkodaYl9wvQCwBMr3qGR_PPHcw'
@@ -173,8 +172,6 @@ def create_app(configfile=None):
 			return 'Please give a CSV file and hospital name'
 
 	signal.signal(signal.SIGINT, hm.shutdown)
-
-	return app
 
 
 
