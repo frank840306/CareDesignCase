@@ -1,5 +1,5 @@
 from utils import *
-# from casemodel import kerasModel		# ML model from Kevin
+from casemodel import kerasModel		# ML model from Kevin
 from rfModel import RandomForestModel	# ML model from Andy
 from trainingManager import TrainingManager
 import logging, time, shutil
@@ -113,8 +113,7 @@ class HospitalManager:
 				self.logger.info(data)
 				# model = readPickle(task['modelClassFile'])
 				if task['method'] == 'keras':
-					pass
-					# model = kerasModel(task['modelName'], task['hospital'])
+					model = kerasModel(task['modelName'], task['hospital'])
 				elif task['method'] == 'rf':
 					model = RandomForestModel(task['modelName'], task['hospital'])
 				else:
