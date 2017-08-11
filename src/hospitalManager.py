@@ -1,5 +1,5 @@
 from utils import *
-from casemodel import kerasModel		# ML model from Kevin
+# from casemodel import kerasModel		# ML model from Kevin
 from rfModel import RandomForestModel	# ML model from Andy
 from trainingManager import TrainingManager
 import logging, time, shutil
