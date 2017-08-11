@@ -14,19 +14,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 
 import os, argparse, logging, atexit, json, time, signal, re
 
-parser = argparse.ArgumentParser(
-	prog='PROG',
-	formatter_class=argparse.RawDescriptionHelpFormatter, 
-	description='''
-		Care Design Server
-		--------------------------
 
-	'''
-	)
-parser.add_argument('-m', '--mode', help='debug or deploy', default='debug')
-parser.add_argument('-n', '--host', help='host name', default='127.0.0.1')
-parser.add_argument('-p', '--port', help='port number', type=int, default=5000)
-args = parser.parse_args()
 
 def trainModel(filename):
 	print ('XDDD : ' + filename)
@@ -184,11 +172,6 @@ def create_app(configfile=None):
 		else:
 			return 'Please give a CSV file and hospital name'
 
-
-	@app.route('/admin')
-	def routeAdmin():
-		return admin.hello()
-
 	signal.signal(signal.SIGINT, hm.shutdown)
 
 	return app
@@ -196,6 +179,20 @@ def create_app(configfile=None):
 
 
 if __name__ == '__main__':
+	parser = argparse.ArgumentParser(
+		prog='PROG',
+		formatter_class=argparse.RawDescriptionHelpFormatter, 
+		description='''
+			Care Design Server
+			--------------------------
+
+		'''
+		)
+	parser.add_argument('-m', '--mode', help='debug or deploy', default='debug')
+	parser.add_argument('-n', '--host', help='host name', default='127.0.0.1')
+	parser.add_argument('-p', '--port', help='port number', type=int, default=5000)
+	args = parser.parse_args()
+
 	setupLogger()
 	logger = logging.getLogger(__name__)
 	logger.info('Initial logger')
