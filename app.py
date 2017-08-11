@@ -183,10 +183,6 @@ def removeFile():
 		return 'Please give a CSV file and hospital name'
 
 
-@app.route('/admin')
-def routeAdmin():
-	return admin.hello()
-
 signal.signal(signal.SIGINT, hm.shutdown)
 
 if __name__ == '__main__':
