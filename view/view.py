@@ -21,7 +21,6 @@ def create_view_route(app):
 	 #    <p>It is currently {time}.</p>
 	 #    <p>AddHospital: http://127.0.0.1:5000/addHospital?hospital=NTU1</p>
 	 #    """.format(time=the_time)
-	 	return "app2"
 		return render_template('main.html', time=the_time)
 
 	@app.route('/admin')   
