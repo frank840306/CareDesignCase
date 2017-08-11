@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from utils import *
 from logManager import setupLogger
-from casemodel import kerasModel 
-from rfModel import RandomForestModel
+# from casemodel import kerasModel 
+# from rfModel import RandomForestModel
 # TODO:
 # create hospitalManager to maintain model from different hospital
 from hospitalManager import HospitalManager
@@ -20,7 +20,7 @@ def trainModel(filename):
 	print ('XDDD : ' + filename)
 	return
 
-def create_app(configfile=None):
+def create_app(app, configfile=None):
 	root_dir = '.'
 	data_dir = os.path.join(root_dir, 'data')
 	mdl_dir = os.path.join(root_dir, 'mdl')
@@ -48,10 +48,6 @@ def create_app(configfile=None):
 
 
 	logger.info('Initial Flask app')
-	app = Flask(__name__)
-	AppConfig(app, configfile)
-	app.config['SECRET_KEY'] = 'devkey'
-	app.config['RECAPTCHA_PUBLIC_KEY'] = '6Mfol9cSAAAAADAkodaYl9wvQCwBMr3qGR_PPHcw'
 
 	# Usgae:
 	# /feature?hospital=NTU&filename=example_31_14
@@ -147,7 +143,7 @@ def create_app(configfile=None):
 			filename = str(request.args['filename'])
 			if 'method' in request.args:
 				method = str(request.args['method'])
-				return hm.addFile(hospital, filename, method)
+				return hm.addFile(hospital, filename, method='rf')
 			else:
 				return hm.addFile(hospital, filename)	
 		elif 'hospital' in request.args:
@@ -173,8 +169,6 @@ def create_app(configfile=None):
 			return 'Please give a CSV file and hospital name'
 
 	signal.signal(signal.SIGINT, hm.shutdown)
-
-	return app
 
 
 
