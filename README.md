@@ -64,9 +64,9 @@ Follow the step:
 	1. f1 means feature1, it start from 0 to the feature length
 	2. another example: (the second row in example_37_14.csv) the out put should be `[ "體液電解質不平衡", "疲憊", "睡眠型態紊亂", "組織灌流不足" ]`
 	3. http://127.0.0.1:8000/predict?hospital=NTU1&filename=example_37_14&f0=1&f4=1&f7=1&f13=1&f15=1.0&f17=1.0&f20=1.0&f25=1.0&f30=63.0&f31=154.0&f32=86.0&f33=99.0&f34=177.0&f35=138.0&f36=3.1'
-5. http://127.0.0.1:8000/addFile?hospital=NTU1&filename=example_37_14_bool
-6. http://127.0.0.1:8000/feature?hospital=NTU1&filename=example_37_14_bool
-7. http://127.0.0.1:8000/predict?hospital=NTU1&filename=example_37_14_bool&f1=1&f3=1&f7=1
+5. http://127.0.0.1:8000/addFile?hospital=NTU1&filename=example_14_6
+6. http://127.0.0.1:8000/feature?hospital=NTU1&filename=example_14_6
+7. http://127.0.0.1:8000/predict?hospital=NTU1&filename=example_14_6&f1=1&f3=1&f7=1
 8. Remove Hospital: http://127.0.0.1:8000/removeHospital?hospital=NTU1
 9. Remove File: http://127.0.0.1:8000/removeFile?hospital=NTU1&filename=example_37_14
 
