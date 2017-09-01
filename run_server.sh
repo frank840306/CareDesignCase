@@ -10,7 +10,7 @@ export PYTHONPATH=src:${PYTHONPATH}
 
 if [ $1 = debug ]; then
 	host=127.0.0.1
-	port=5000
+	port=8000
 	python3 ${src_dir}/server.py -m $1 -n $host -p $port
 elif [ $1 = deploy ]; then
 	host=0.0.0.0

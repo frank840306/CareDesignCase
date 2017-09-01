@@ -135,6 +135,7 @@ def create_app(app, configfile=None):
 	# Usgae:
 	# /addFile?hospital=NTU&filename=example_31_14
 	# /addFile?hospital=NTU&filename=example_31_14&method=rf
+	# /addFile?hospital=NTU&filename=example_31_14&method=keras
 	
 	@app.route('/addFile')
 	def addFile():
@@ -187,12 +188,20 @@ if __name__ == '__main__':
 	parser.add_argument('-p', '--port', help='port number', type=int, default=5000)
 	args = parser.parse_args()
 
+	app = Flask(__name__)
+
 	setupLogger()
 	logger = logging.getLogger(__name__)
 	logger.info('Initial logger')
+
+	app.config['SECRET_KEY'] = 'devkey'
+	app.config['RECAPTCHA_PUBLIC_KEY'] = '6Mfol9cSAAAAADAkodaYl9wvQCwBMr3qGR_PPHcw'
+
 	if args.mode == 'debug':
 		logger.info('Running server as [ %s ] mode on [ %s : %d ]' % (args.mode, args.host, args.port))
-		create_app().run(debug=False, host=args.host, port=args.port)
+		# create_app().run(debug=False, host=args.host, port=args.port)
+		create_app(app)
+		app.run(debug=False, host=args.host, port=args.port)
 	elif args.mode == 'deploy':
 		logger.info('Running server as [ %s ] mode on [ %s : %d ]' % (args.mode, args.host, args.port))
 		create_app().run(debug=False, host=args.host, port=args.port)
