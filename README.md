@@ -12,7 +12,7 @@ This command will install the libraries included with the pip
 > $ env PYTHONPATH=$PYTHONPATH:$PWD/src gunicorn app2:app --log-file=-
 
 #Project Folder Structure
-![alt text](https://raw.githubusercontent.com/frank840306/CareDesignCase/master/img/tree.png)
+[[https://github.com/frank840306/CareDesignCase/blob/master/img/tree.png]]
 
 #Training Data
 Put the .csv training data into the path: [project_root]/data/
