@@ -12,42 +12,7 @@ This command will install the libraries included with the pip
 > $ env PYTHONPATH=$PYTHONPATH:$PWD/src gunicorn app2:app --log-file=-
 
 #Project Folder Structure
-.
-├── CareDesignDemoApp
-├── Procfile
-├── README.md
-├── app.py
-├── app2.py  ** // the python code which gunicorn runs **
-├── config
-│   └── logging.json
-├── data     
-│   ├── example_14_6.csv
-│   ├── example_37_14.csv
-│   ├── ** // put .csv files here ** 
-├── log      
-│   ├── ** // server log will be saved here **
-├── mdl      
-│   ├── ** // model will be saved here **
-├── requirements.txt
-├── run_server.sh
-├── runtime.txt
-├── setup.sh
-├── src
-│   ├── ** // source codes are here **
-│   ├── array2url.py
-│   ├── casemodel.py
-│   ├── hospitalManager.py
-│   ├── logManager.py
-│   ├── rfModel.py
-│   ├── server.py
-│   ├── trainingManager.py
-│   └── utils.py
-├── version2
-│   ├── ** // this is the version2 which is not finished and stopped **
-└── view
-    ├── ** // this is the backstage view which is not finished and stopped **
-    ├── admin.py
-    └── view.py
+![alt text](https://raw.githubusercontent.com/frank840306/CareDesignCase/master/img/tree.png)
 
 #Training Data
 Put the .csv training data into the path: [project_root]/data/
