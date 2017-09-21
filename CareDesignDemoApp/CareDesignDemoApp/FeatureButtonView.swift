@@ -39,14 +39,15 @@ class FeatureButton: UIButton{
     }
     
     func click(){
-        isFeatured = !isFeatured
-        let superview = self.superview as! FeatureButtonView
-        superview.click(self.index)
+        self.isFeatured = !self.isFeatured
+
+        let _superview = self.superview as! FeatureButtonView
+        _superview.click(self.index)
         changeColor()
     }
     
     func changeColor(){
-        if(isFeatured){
+        if(self.isFeatured){
             setTitleColor(.white, for: .normal)
             backgroundColor = care_color_green
         }else{
@@ -56,7 +57,8 @@ class FeatureButton: UIButton{
     }
     
     func disselect(){
-        isFeatured = false
+        self.isFeatured = false
+        
         changeColor()
     }
     
@@ -112,7 +114,7 @@ class FeatureFloat: UIView, UITextFieldDelegate{
     
     func defaultValue(feature: String) -> String{
         let features = ["age", "sbp", "dbp", "trig", "chol", "Na", "K"]
-        let defaults = ["71", "142", "95", "138", "218", "136", "4.1"]
+        let defaults = ["63", "154", "86", "99", "177", "138", "3.1"]
         
         if (features.contains(feature)){
             return defaults[features.index(of: feature)!]
@@ -222,8 +224,9 @@ class FeatureButtonView: UIScrollView{
     }
     
     func clearFeatureButton(){
-        for button in buttons{
+        for (index,button) in buttons.enumerated(){
             button.disselect()
+            isFeatured[index] = false
         }
     }
     

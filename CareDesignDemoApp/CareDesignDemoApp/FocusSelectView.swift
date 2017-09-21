@@ -112,11 +112,16 @@ class FocusSelectView: UIView{
         if(focusRecommendNum > 5) {
             focusRecommendNum = 5
         }
-        for index in 0...focusRecommendNum-1{
-            focusButtonList[index].setTitle(focusList[index], for: .normal)
-            focusButtonList[index].titleLabel!.text = focusList[index]
-            focusButtonList[index].changeColor()
-//            self.backgroundColor = .red
+        for index in 0...4{
+            if(index < focusRecommendNum){
+                focusButtonList[index].setTitle(focusList[index], for: .normal)
+                focusButtonList[index].titleLabel!.text = focusList[index]
+                focusButtonList[index].changeColor()
+            }else{
+                focusButtonList[index].setTitle("", for: .normal)
+                focusButtonList[index].titleLabel!.text = ""
+                focusButtonList[index].changeColor()
+            }
         }
         print("updateBtn done")
     }

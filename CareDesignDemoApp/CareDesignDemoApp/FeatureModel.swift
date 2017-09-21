@@ -13,7 +13,7 @@ class FeatureModel{
     var hospital :String = "NTU1"
     var fileName: String = "example_37_14_bool"
     var documentsPath :String!
-    let debug_url = "http://127.0.0.1:5000/"
+    let debug_url = "http://127.0.0.1:8000/"
     var my_url:String!
     var feature_url:String!
     var predict_url:String!
@@ -100,6 +100,7 @@ class FeatureModel{
             
             if let json = try? JSONSerialization.jsonObject(with: data, options: []){
                 self.focusList = json as! [String]
+                print("self.focusList = ", self.focusList)
                 print("json success")
             }else{
                 print("json failed")
